@@ -3,9 +3,14 @@ import React from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
+// import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
 import './sign-up.styles.scss';
+/****FOR REDUX SEGA CODE *****/
+import { signUpStart } from "../../redux/user/user.actions";
+import { connect } from 'react-redux';
+
+
 
 class SignUp extends React.Component {
   constructor() {
@@ -21,6 +26,7 @@ class SignUp extends React.Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+    const {signUpStart}= this.props
 
     const { displayName, email, password, confirmPassword } = this.state;
 
@@ -28,7 +34,7 @@ class SignUp extends React.Component {
       alert("passwords don't match");
       return;
     }
-
+/*
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
@@ -46,6 +52,12 @@ class SignUp extends React.Component {
     } catch (error) {
       console.error(error);
     }
+    */
+
+    /****FOR REDUX SEGA CODE *****/
+    signUpStart({displayName, email, password})
+
+
   };
 
   handleChange = event => {
@@ -100,4 +112,10 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+/****FOR REDUX SEGA CODE *****/
+ const mapDispatchyToProps = dispatch => ({
+   signUpStart : userCredentials => dispatch(signUpStart(userCredentials))
+ })
+
+
+export default connect(null, mapDispatchyToProps)(SignUp);
